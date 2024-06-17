@@ -1,5 +1,7 @@
 const Hapi = require('@hapi/hapi');
 const { recommend } = require('./inference');
+const { storeData } = require('./store-data.js');
+const crypto = require('crypto');
 
 (async () => {
     const server = Hapi.server({
@@ -37,9 +39,17 @@ const { recommend } = require('./inference');
                     jobs.push(jobLine.split(':')[1].split(',')[0].trim());
                 }
 
+                id = crypto.randomUUID();
+                predictData = {
+                    "id": id,
+                    "result": jobs,
+                    "createdAt": new Date()
+                };
+                await storeData(id, predictData);
+
                 return h.response({
                     "status": "success",
-                    "message": "Model is predicted successfully",
+                    "message": "Jobs are recommended successfully",
                     "data": jobs
                 }).code(201);
             } catch (err) {
