@@ -17,7 +17,7 @@ const { recommend } = require('./inference');
         if (response.isBoom && response.output.statusCode === 413) {
             return h.response({
                 "status": "fail",
-                "message": "Payload content length greater than maximum allowed: 1000000"
+                "message": "Payload content size is greater than 1 MB"
              }).code(413);
         }
         return h.continue;
@@ -30,17 +30,26 @@ const { recommend } = require('./inference');
             try {
                 const { skills } = request.payload;
 
-                console.log(skills)
-
                 const recommendations = await recommend(skills);
 
-                console.log(recommendations)
+                console.log(recommendations);
+                jobs = [];
+                for (jobLine of recommendations.slice(0, 10)) {
+                    console.log(jobLine);
+                    jobs.push(jobLine.split(':')[1].split(',')[0].trim());
+                }
+
+                return h.response({
+                    "status": "success",
+                    "message": "Model is predicted successfully",
+                    "data": jobs
+                }).code(201);
             } catch (err) {
                 console.log(err);
 
                 return h.response({
                     "status": "fail",
-                    "message": "Terjadi kesalahan dalam melakukan prediksi"
+                    "message": "Error when recommending jobs"
                 }).code(400);
             }
         },
