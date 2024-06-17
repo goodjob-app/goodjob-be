@@ -40,17 +40,18 @@ const crypto = require('crypto');
                 }
 
                 id = crypto.randomUUID();
-                predictData = {
+                recommendData = {
                     "id": id,
-                    "result": jobs,
+                    "skills": skills,
+                    "jobs": jobs,
                     "createdAt": new Date()
                 };
-                await storeData(id, predictData);
+                await storeData(id, recommendData);
 
                 return h.response({
                     "status": "success",
                     "message": "Jobs are recommended successfully",
-                    "data": jobs
+                    "data": recommendData
                 }).code(201);
             } catch (err) {
                 console.log(err);
