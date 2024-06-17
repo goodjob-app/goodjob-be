@@ -32,10 +32,8 @@ const { recommend } = require('./inference');
 
                 const recommendations = await recommend(skills);
 
-                console.log(recommendations);
                 jobs = [];
                 for (jobLine of recommendations.slice(0, 10)) {
-                    console.log(jobLine);
                     jobs.push(jobLine.split(':')[1].split(',')[0].trim());
                 }
 
