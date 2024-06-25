@@ -30,7 +30,7 @@ const crypto = require('crypto');
         path: '/recommend',
         handler: async (request, h) => {
             try {
-                const { skills } = request.payload;
+                const { skills } = request.body;
 
                 const recommendations = await recommend(skills);
 
@@ -65,8 +65,8 @@ const crypto = require('crypto');
         
         options: {
             payload: {
-                allow: 'multipart/form-data',
-                multipart: true,
+                allow: 'application/json',
+                multipart: false,
                 maxBytes: 1000000
             }
         }
