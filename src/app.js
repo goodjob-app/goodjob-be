@@ -30,7 +30,7 @@ const crypto = require('crypto');
         path: '/recommend',
         handler: async (request, h) => {
             try {
-                const { skills } = request.body;
+                const { skills } = request.payload;
 
                 const recommendations = await recommend(skills);
 
